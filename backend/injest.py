@@ -2,6 +2,7 @@ import sqlite3
 
 from .config import SQLITE_PATH
 
+# -- database metadata --
 def _db():
     conn = sqlite3.connect(SQLITE_PATH)
     conn.execute("""
