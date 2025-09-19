@@ -1,4 +1,9 @@
 import sqlite3
+from typing import List, Tuple, Dict
+from pathlib import Path
+import re
+
+from pypdf import PdfReader
 
 from .config import SQLITE_PATH
 
@@ -23,3 +28,14 @@ def _db():
     )""")
     conn.commit()
     return conn
+
+# -- pdf/text extraction --
+def extract_text_pdf(pdf_bytes: bytes) -> str:
+    reader = PdfReader(io_bytes:=__import__("io").BytesIO(pdf_bytes))
+    out = []
+    for page in reader.pages:
+        out.append(page.extract_text() or "")
+    return "\n".join(out)
+
+def normalize_whitespace(s: str) -> str:
+    return re.sub(r"[ \t]+", " ", s).strip()
